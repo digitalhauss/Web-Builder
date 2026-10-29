@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "templates": [
+    {
+      "id": "digital-haus",
+      "name": "Digital Haus · Lavender & White",
+      "category": "Business",
+      "legacy": true,
+      "cover": "templates/digital-haus/cover.webp",
+      "pages": 17
+    }
+  ]
+}
