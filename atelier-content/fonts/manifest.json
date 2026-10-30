@@ -2,12 +2,12 @@
   "version": 1,
   "items": [
     {
-      "id": "yeseva-one-regular",
-      "name": "Yeseva One Regular",
-      "file": "yeseva-one-regular.ttf",
-      "family": "Yeseva One Regular",
+      "id": "amsterdam",
+      "name": "Amsterdam",
+      "file": "amsterdam.ttf",
+      "family": "Amsterdam",
       "category": "Digital Haus",
-      "license": "Personal Use",
+      "license": "personal use",
       "licenseUrl": "",
       "licenseFile": ""
     }
