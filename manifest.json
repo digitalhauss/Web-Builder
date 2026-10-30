@@ -1,4 +1,15 @@
 {
   "version": 1,
-  "items": []
+  "items": [
+    {
+      "id": "Amsterdam",
+      "name": "Amsterdam",
+      "file": "Amsterdam.ttf",
+      "family": "Amsterdam",
+      "category": "Digital Haus",
+      "license": "personal use",
+      "licenseUrl": "",
+      "licenseFile": ""
+    }
+  ]
 }
