@@ -1,4 +1,15 @@
 {
   "version": 1,
-  "items": []
+  "items": [
+    {
+      "id": "yeseva-one-regular",
+      "name": "Yeseva One Regular",
+      "file": "yeseva-one-regular.ttf",
+      "family": "Yeseva One Regular",
+      "category": "Digital Haus",
+      "license": "Personal Use",
+      "licenseUrl": "",
+      "licenseFile": ""
+    }
+  ]
 }
