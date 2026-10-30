@@ -62,54 +62,6 @@
       "style": "normal"
     },
     {
-      "id": "cinzel-900-normal-cinzel-black",
-      "name": "Cinzel Black",
-      "file": "Cinzel-Black.otf",
-      "family": "Cinzel",
-      "category": "Digital Haus",
-      "license": "",
-      "licenseUrl": "",
-      "licenseFile": "",
-      "weight": "900",
-      "style": "normal"
-    },
-    {
-      "id": "cinzel-700-normal-cinzel-bold",
-      "name": "Cinzel Bold",
-      "file": "Cinzel-Bold.otf",
-      "family": "Cinzel",
-      "category": "Digital Haus",
-      "license": "",
-      "licenseUrl": "",
-      "licenseFile": "",
-      "weight": "700",
-      "style": "normal"
-    },
-    {
-      "id": "cinzel-400-normal-cinzel-regular",
-      "name": "Cinzel Regular",
-      "file": "Cinzel-Regular.otf",
-      "family": "Cinzel",
-      "category": "Digital Haus",
-      "license": "",
-      "licenseUrl": "",
-      "licenseFile": "",
-      "weight": "400",
-      "style": "normal"
-    },
-    {
-      "id": "cinzel-decorative-900-normal-cinzeldecorative-black",
-      "name": "Cinzel Decorative Black",
-      "file": "CinzelDecorative-Black.otf",
-      "family": "Cinzel Decorative",
-      "category": "Digital Haus",
-      "license": "",
-      "licenseUrl": "",
-      "licenseFile": "",
-      "weight": "900",
-      "style": "normal"
-    },
-    {
       "id": "cinzel-decorative-700-normal-cinzeldecorative-bold",
       "name": "Cinzel Decorative Bold",
       "file": "CinzelDecorative-Bold.otf",
@@ -181,66 +133,7 @@
       "weight": "700",
       "style": "normal"
     },
-    {
-      "id": "the-seasons-700-italic-the-seasons-bold-italic",
-      "name": "The Seasons Bold Italic",
-      "file": "The-Seasons-Bold-Italic.otf",
-      "family": "The Seasons",
-      "category": "Digital Haus",
-      "license": "",
-      "licenseUrl": "",
-      "licenseFile": "",
-      "weight": "700",
-      "style": "italic"
-    },
-    {
-      "id": "the-seasons-400-italic-the-seasons-italic",
-      "name": "The Seasons Italic",
-      "file": "The-Seasons-Italic.otf",
-      "family": "The Seasons",
-      "category": "Digital Haus",
-      "license": "",
-      "licenseUrl": "",
-      "licenseFile": "",
-      "weight": "400",
-      "style": "italic"
-    },
-    {
-      "id": "the-seasons-300-normal-the-seasons-light",
-      "name": "The Seasons Light",
-      "file": "The-Seasons-Light.otf",
-      "family": "The Seasons",
-      "category": "Digital Haus",
-      "license": "",
-      "licenseUrl": "",
-      "licenseFile": "",
-      "weight": "300",
-      "style": "normal"
-    },
-    {
-      "id": "the-seasons-300-italic-the-seasons-light-italic",
-      "name": "The Seasons Light Italic",
-      "file": "The-Seasons-Light-Italic.otf",
-      "family": "The Seasons",
-      "category": "Digital Haus",
-      "license": "",
-      "licenseUrl": "",
-      "licenseFile": "",
-      "weight": "300",
-      "style": "italic"
-    },
-    {
-      "id": "the-seasons-400-normal-the-seasons-regular",
-      "name": "The Seasons Regular",
-      "file": "The-Seasons-Regular.otf",
-      "family": "The Seasons",
-      "category": "Digital Haus",
-      "license": "",
-      "licenseUrl": "",
-      "licenseFile": "",
-      "weight": "400",
-      "style": "normal"
-    },
+   
     {
       "id": "yeseva-one-400-normal-yesevaone-regular",
       "name": "Yeseva One Regular",
