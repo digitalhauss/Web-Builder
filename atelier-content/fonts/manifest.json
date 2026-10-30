@@ -1,4 +1,17 @@
 {
   "version": 1,
-  "items": []
+  "items": [
+    {
+      "id": "amsterdam-400-normal-amsterdam",
+      "name": "Amsterdam Regular",
+      "file": "Amsterdam.ttf",
+      "family": "Amsterdam",
+      "category": "Digital Haus",
+      "license": "personal use",
+      "licenseUrl": "",
+      "licenseFile": "",
+      "weight": "400",
+      "style": "normal"
+    }
+  ]
 }
