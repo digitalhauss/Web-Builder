@@ -16085,7 +16085,117 @@ const A314_CSS=`
 const a314Style=document.createElement('style');a314Style.id='a314-review-style';a314Style.textContent=A314_CSS;document.head.appendChild(a314Style);
 /* === end Atelier v30.21.14 === */
 
-</script></body></html>
+</script>
+<!-- ATELIER_RSVP_REPAIR_1 -->
+<script>
+
+(function(){
+'use strict';
+if(window.__atelierRsvpRepair1)return;
+if(typeof at21QuestionList!=='function'||typeof at21Preview!=='function'||typeof at21Refresh!=='function'||typeof formHTML!=='function'){console.error('Perbaikan RSVP: fungsi Atelier tidak ditemukan.');return;}
+window.__atelierRsvpRepair1=true;
+const originalContent=at21Content,originalRefresh=at21Refresh,originalList=at21QuestionList,originalSet=at21Set;
+const escapeText=x=>at21Text(String(x==null?'':x));
+function hiddenKeys(el){at21OrderOf(el);return ['attendance','count','message'].filter(k=>el.rsvp.hiddenFields.includes(k));}
+function hiddenPanel(el){
+ const keys=hiddenKeys(el);
+ return '<section class="ar-hidden"><h3>Kolom tersembunyi <span>'+keys.length+'</span></h3><p class="at21-helper">Kolom ini tidak terlihat pada formulir tamu. Tampilkan kembali tanpa kehilangan teks atau pengaturannya.</p>'+(!keys.length?'<p class="ar-empty">Tidak ada kolom esensial yang disembunyikan.</p>':keys.map(key=>'<div class="at21-restorerow"><span>'+escapeText(at21FieldLabel(el,key))+'</span><button type="button" data-ar-restore="'+key+'">Tampilkan kembali</button></div>').join('')+'<p class="at21-helper">Kehadiran yang disembunyikan tetap memakai nilai bawaan hadir; jumlah tamu memakai nilai bawaan satu.</p>')+'</section>';
+}
+at21QuestionList=function(el){
+ const box=document.createElement('div');box.innerHTML=originalList(el);
+ const restores=[...box.querySelectorAll('.at21-restorerow')];
+ if(restores.length){let n=restores[0].previousElementSibling;if(n&&n.classList.contains('at21-helper')){const h=n.previousElementSibling;n.remove();if(h&&h.classList.contains('at21-minihead'))h.remove();}restores.forEach(n=>n.remove());}
+ const count=hiddenKeys(el).length;
+ return '<button class="ar-hidden-link" type="button" data-ar-hidden>Kolom tersembunyi <b>'+count+'</b> <span>Lihat →</span></button>'+box.innerHTML;
+};
+at21Content=function(el){if(at21Tab==='hidden')return hiddenPanel(el);return originalContent(el);};
+function syncSelection(){
+ const root=document.querySelector('#at21-preview');if(!root)return;
+ root.querySelectorAll('[data-ar-path]').forEach(n=>n.classList.toggle('ar-selected',n.dataset.arPath===at21Selected));
+}
+at21Refresh=function(){
+ const overlay=document.querySelector('#at21-overlay');if(!overlay)return;
+ const side=overlay.querySelector('.at21-sidebar'),stage=overlay.querySelector('.at21-stage');
+ const sy=side?side.scrollTop:0,py=stage?stage.scrollTop:0;
+ originalRefresh();
+ const el=at21El(),tabs=overlay.querySelector('.at21-tabs');
+ if(el&&tabs){const b=document.createElement('button');b.type='button';b.dataset.arHidden='';b.textContent='Tersembunyi ('+hiddenKeys(el).length+')';b.setAttribute('aria-selected',String(at21Tab==='hidden'));tabs.appendChild(b);}
+ if(side)side.scrollTop=sy;if(stage)stage.scrollTop=py;syncSelection();
+};
+at21Preview=function(el){
+ at21OrderOf(el);at21StyleSetup(el);
+ const box=document.createElement('div');box.innerHTML=formHTML(el,false);
+ const form=box.querySelector('form');
+ if(!form)return '<p>Pratinjau formulir belum tersedia.</p>';
+ // Render the real canvas/export markup, but strip live submission wiring.
+ form.removeAttribute('data-at-rsvp');form.removeAttribute('action');form.removeAttribute('method');form.setAttribute('data-ar-preview','');
+ box.querySelectorAll('script,iframe').forEach(n=>n.remove());
+ box.querySelectorAll('*').forEach(n=>{[...n.attributes].forEach(a=>{if(/^on/i.test(a.name))n.removeAttribute(a.name);});n.removeAttribute('autofocus');});
+ const ordered=at21OrderOf(el).filter(k=>!el.rsvp.hiddenFields.includes(k));
+ const used=new Set();
+ const labels=[...box.querySelectorAll('label,.fl')].filter(n=>!n.parentElement.closest('label,.fl')&&!n.closest('.at21-hidden-public'));
+ ordered.forEach(key=>{
+  const path=at21FieldPath(el,key),label=String(at21FieldLabel(el,key)||'').trim();
+  const clean=t=>t.replace(/\s*\*\s*$/,'').trim().replace(/\s+/g,' ').toLowerCase();
+  const node=labels.find(n=>!used.has(n)&&clean(n.textContent)===clean(label));
+  if(node){used.add(node);node.dataset.arPath=path;node.tabIndex=0;node.setAttribute('role','button');node.title='Edit pengaturan kolom ini';node.classList.add('ar-preview-label');if(path===at21Selected)node.classList.add('ar-selected');}
+ });
+ box.querySelectorAll('input,textarea,select').forEach(n=>{n.disabled=true;n.removeAttribute('required');});
+ box.querySelectorAll('button,input[type=submit]').forEach(n=>{n.disabled=false;n.type='button';n.dataset.arButton='';});
+ return '<div class="at21-preview-intro"><b>Pratinjau RSVP</b><small>Klik label untuk mengedit kolom yang sama di kiri.</small></div><div class="ar-real-preview el">'+box.innerHTML+'</div><p class="at21-helper ar-note">Pratinjau saja — tidak mengirim respons.</p>';
+};
+at21Set=function(path,value,options){
+ if(typeof value==='number'&&!Number.isFinite(value))return;
+ originalSet(path,value,options||{});
+ // Refresh dependent controls when the original change handler sees an unchanged value.
+ if(options&&options.refresh){at21Refresh();}
+ const overlay=document.querySelector('#at21-overlay');
+ if(overlay){overlay.querySelectorAll('[data-at21-pick]').forEach(n=>{if(n.dataset.at21Pick===path){const b=n.querySelector('b');if(b)b.textContent=String(value);}});}
+};
+function selectPath(path){
+ at21Selected=path;at21Tab='questions';at21Refresh();
+ const overlay=document.querySelector('#at21-overlay');const inspector=overlay&&overlay.querySelector('.at21-inspector');
+ if(inspector)inspector.scrollIntoView({block:'nearest',behavior:'smooth'});
+ syncSelection();
+}
+// Capture before legacy document handlers so one tap performs exactly one action.
+window.addEventListener('click',function(e){
+ const t=e.target instanceof Element?e.target:null;if(!t||!t.closest('#at21-overlay'))return;
+ const hidden=t.closest('[data-ar-hidden]'),restore=t.closest('[data-ar-restore]'),label=t.closest('[data-ar-path]'),button=t.closest('[data-ar-button]');
+ if(!hidden&&!restore&&!label&&!button)return;
+ e.preventDefault();e.stopImmediatePropagation();
+ if(hidden){at21Tab='hidden';at21Refresh();const s=document.querySelector('.at21-sidebar');if(s)s.scrollTop=0;return;}
+ if(restore){const el=at21El(),key=restore.dataset.arRestore;if(!el||!hiddenKeys(el).includes(key))return;commit(discrete());el.rsvp.hiddenFields=el.rsvp.hiddenFields.filter(k=>k!==key);at21Selected=at21FieldPath(el,key);renderCanvas();scheduleSave();at21Refresh();return;}
+ if(label){selectPath(label.dataset.arPath);return;}
+ if(button){at21Tab='button';at21Refresh();}
+},true);
+window.addEventListener('keydown',function(e){const t=e.target;if((e.key==='Enter'||e.key===' ')&&t instanceof Element&&t.matches('#at21-overlay [data-ar-path]')){e.preventDefault();e.stopImmediatePropagation();selectPath(t.dataset.arPath);}},true);
+window.addEventListener('submit',function(e){if(e.target.closest('#at21-preview')){e.preventDefault();e.stopImmediatePropagation();}},true);
+const css=document.createElement('style');css.textContent=`
+#at21-overlay .at21-work{flex:1;height:auto;min-height:0;grid-template-columns:minmax(320px,1fr) minmax(320px,1fr);overflow:hidden}
+#at21-overlay .at21-sidebar,#at21-overlay .at21-stage{min-height:0;overflow:auto;overscroll-behavior:contain;scroll-padding-top:80px}
+#at21-overlay .at21-tabs{flex-wrap:wrap;top:0;z-index:5;padding-top:8px}
+#at21-overlay .at21-tabs button{flex:1 0 28%;min-height:38px}
+#at21-overlay .at21-stage{padding:24px}
+#at21-overlay .at21-preview-intro{min-height:58px;margin-bottom:20px;align-items:center}
+#at21-overlay .ar-hidden-link{display:flex;width:100%;align-items:center;gap:10px;border:1px solid #cbd6f5;border-radius:12px;background:#f2f5ff;padding:13px;color:#304683;cursor:pointer;margin-bottom:18px;text-align:left}
+#at21-overlay .ar-hidden-link span{margin-left:auto}
+#at21-overlay .ar-hidden{padding:15px;border:1px solid #d9e2f4;border-radius:14px;background:#f8faff}
+#at21-overlay .ar-hidden .at21-helper{margin-top:15px}
+#at21-overlay .ar-empty{padding:20px 0;color:#69758c;font-size:13px}
+#at21-overlay .ar-real-preview.el{position:relative!important;inset:auto!important;transform:none!important;width:100%!important;height:auto!important;min-height:0;opacity:1!important;background:white;border:1px solid #dce3f1;border-radius:18px;padding:26px;overflow:visible!important;pointer-events:auto!important}
+#at21-overlay .ar-real-preview .fm{width:100%;height:auto!important;max-width:100%;pointer-events:auto!important}
+#at21-overlay .ar-real-preview input:disabled,#at21-overlay .ar-real-preview textarea:disabled,#at21-overlay .ar-real-preview select:disabled{opacity:1;-webkit-text-fill-color:currentColor}
+#at21-overlay .ar-preview-label{cursor:pointer;border-radius:4px;outline-offset:4px;pointer-events:auto!important}
+#at21-overlay .ar-preview-label:hover,#at21-overlay .ar-preview-label:focus-visible,#at21-overlay .ar-preview-label.ar-selected{outline:2px solid #637dee}
+#at21-overlay .ar-note{text-align:center;margin:14px}
+@media(max-width:700px){#at21-overlay{padding:8px}#at21-overlay .at21-work{grid-template-columns:1fr;grid-template-rows:minmax(0,1fr) minmax(0,1fr)}#at21-overlay .at21-sidebar{border-right:0;border-bottom:1px solid #dce3ef}#at21-overlay .at21-stage{padding:16px}#at21-overlay .at21-bar{padding:12px}#at21-overlay .at21-bar small{display:none}#at21-overlay .at21-tabs button{flex:1 0 28%}#at21-overlay .ar-real-preview.el{padding:18px}}
+`;document.head.appendChild(css);
+if(document.querySelector('#at21-overlay'))at21Refresh();
+})();
+
+</script>
+</body></html>
 <!-- Atelier Studio v28.12 · detail-preserving background remover patch -->
 
 <!-- Atelier Studio v30.15.0 · Rounded Rectangle + Corner Controls -->
