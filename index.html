@@ -16124,7 +16124,11 @@ at21Refresh=function(){
 };
 at21Preview=function(el){
  at21OrderOf(el);at21StyleSetup(el);
- const box=document.createElement('div');box.innerHTML=formHTML(el,false);
+ // The original renderer includes essentials only when rsvp.enabled is true.
+ // Use a preview-only copy; do not enable live RSVP or change its endpoint.
+ const previewEl=JSON.parse(JSON.stringify(el));
+ previewEl.rsvp=Object.assign({},previewEl.rsvp,{enabled:true});
+ const box=document.createElement('div');box.innerHTML=formHTML(previewEl,false);
  const form=box.querySelector('form');
  if(!form)return '<p>Pratinjau formulir belum tersedia.</p>';
  // Render the real canvas/export markup, but strip live submission wiring.
